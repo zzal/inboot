@@ -1,0 +1,30 @@
+# build output
+dist
+
+# dependencies
+node_modules
+test/node_modules
+
+# logs & pids
+*.log
+pids
+*.cpuprofile
+*.heapsnapshot
+
+# coverage
+.nyc_output
+coverage
+
+# test output
+test/**/out*
+test/**/next-env.d.ts
+.DS_Store
+/e2e-tests
+test/tmp/**
+test/.trace
+test/traces
+
+# Editors
+**/.idea
+**/.#*
+.nvmrc
