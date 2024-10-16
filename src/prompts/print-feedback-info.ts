@@ -8,8 +8,8 @@ export const printFeedbackInfo = (label: string, value: string, isWarn = false) 
 }
 
 
-export const printProcessStart = (projectName: string, techStack: string) => {
+export const printProcessStart = (projectName: string, templateKey: string, techStack: string) => {
   const getTuple = (label: string, value: string) => `${label} ${chalk.cyan(chalk.inverse(` ${value} `))}`;
 
-  spinner.start(`${getTuple("Creating", projectName)} ${getTuple("using", techStack)}`);
+  spinner.start(`${getTuple("Creating", projectName)} ${getTuple("using template", templateKey)} ${getTuple("via", techStack)}`);
 }

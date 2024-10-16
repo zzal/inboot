@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 
-import chalk from "chalk";
-
 import { program } from "./program.js"
 
 import { promptAwsUser } from "./prompts/prompt-aws-user.js";
 import { displayAppLogo } from "./display/app-logo.js";
 import { promptProjectName } from "./prompts/prompt-project-name.js";
-import { promptTechStack, TechStack } from "./prompts/prompt-tech-stack.js";
-import { spinner } from "./prompts/spinner.js";
+import { promptTechStack } from "./prompts/prompt-tech-stack.js";
 import { printFeedbackInfo, printProcessStart } from "./prompts/print-feedback-info.js";
+import { promptTemplate } from "./prompts/prompt-template.js";
+import { GITHUB_REPO, templates } from "./config/templates.js";
+import { execute } from "./child-process.js";
 
 const handleSigTerm = () => process.exit(0)
 
@@ -36,11 +36,26 @@ program.command('init')
     printFeedbackInfo("Using project name:", projectName, hasChanged);
 
     const techStack = await promptTechStack();
-    printProcessStart(projectName, techStack);
+    printFeedbackInfo("Using IaC framework:", techStack);
 
-    setTimeout(() => {
-      spinner.succeed(chalk.green("Not really done."));
-    }, 3000);
+    const templateKey = await promptTemplate();
+    printFeedbackInfo("Using what template:", templateKey);
+
+    printProcessStart(projectName, templateKey, techStack);
+
+    execute("npx", [
+      "create-next-app@latest",
+      "--example",
+        GITHUB_REPO,
+      "--example-path",
+        templates[templateKey],
+      "--no-tailwind",
+      "--ts",
+      "--eslint",
+      "--app",
+      "--src-dir",
+      projectName,
+    ])
   });
 
 program.parse();
