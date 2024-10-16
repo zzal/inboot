@@ -1,7 +1,7 @@
 import { execute } from "../execute.js";
 
 async function* stepsSstInstall(projectName: string) {
-  yield await execute("npm", ["install", "-D", "-E", "sst@ion"]);
+  yield await execute("npm", ["install", "-E", "sst@ion"]);
   yield await execute("sst", ["init", "--yes"]);
 }
 
