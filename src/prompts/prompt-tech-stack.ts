@@ -12,7 +12,7 @@ export const promptTechStack = async (): Promise<TechStack> => {
       {
         type: "list",
         name: "techStack",
-        message: "Which framework to use for infrastructure as code?",
+        message: "Which framework to use for IaC?",
         choices: [TechStack.SST, TechStack.AMPLIFY],
         default: config.get("techStack"),
       },

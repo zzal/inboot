@@ -6,7 +6,7 @@ import inquirer from "inquirer";
 import { config } from "../config/config-store.js";
 import { program } from "../program.js";
 
-export const promptProjectName = async (providedName?: string): Promise<string> => {
+export const promptProjectName = async (providedName?: string): Promise<[string, boolean]> => {
   const folderName = slug(path.basename(fs.realpathSync(".")), '-');
   const answer = await inquirer
     .prompt([
@@ -17,8 +17,8 @@ export const promptProjectName = async (providedName?: string): Promise<string> 
         default: slug(providedName ?? folderName, "-"),
       },
     ]);
-
-  const name = slug(answer.projectName ?? folderName, "-");
+  const answeredName = answer.projectName ?? folderName
+  const name = slug(answeredName, "-");
   if (/^\d/.test(name)) {
     program.error("Project names must not starts with a number");
   }
@@ -29,5 +29,5 @@ export const promptProjectName = async (providedName?: string): Promise<string> 
     program.error("Project names must be at least 3 characters");
   }
   config.set("projectName", name);
-  return name;
+  return [name, name !== answeredName];
 }
