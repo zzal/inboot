@@ -4,17 +4,17 @@ import chalk from "chalk";
 
 export const execute= (cmd: string, args: string[]) => {
   const ls = spawn(cmd, args);
-  console.debug(cmd, args.join(" "))
+  console.log("");
+  console.log(cmd, args.join(" "));
 
   ls.stdout.on('data', (data) => {
-    console.log(JSON.stringify(data));
+    // console.log(JSON.stringify(data));
     spinner.text = `stdout: ${data}`;
   });
 
   ls.stderr.on('data', (data) => {
-    console.log(JSON.stringify(data));
-    spinner.text = `stdout: ${data}`;
-    spinner.fail();
+    spinner.text = `stderr: ${data}`;
+    spinner.fail("error");
   });
 
   ls.on('close', (code) => {

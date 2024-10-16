@@ -46,14 +46,8 @@ program.command('init')
     execute("npx", [
       "create-next-app@latest",
       "--example",
-        GITHUB_REPO,
-      "--example-path",
-        templates[templateKey],
-      "--no-tailwind",
-      "--ts",
-      "--eslint",
-      "--app",
-      "--src-dir",
+        `${GITHUB_REPO}/${templates[templateKey]}`,
+      "--use-npm",
       projectName,
     ])
   });
