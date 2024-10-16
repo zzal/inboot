@@ -11,6 +11,10 @@ export const execute= (cmd: string, args: string[]) => {
     // console.log(JSON.stringify(data));
     spinner.text = `stdout: ${data}`;
   });
+  ls.stdout.on('error', (data) => {
+    // console.log(JSON.stringify(data));
+    spinner.text = `stdout: ${data}`;
+  });
 
   ls.stderr.on('data', (data) => {
     spinner.text = `stderr: ${data}`;
