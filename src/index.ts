@@ -6,7 +6,7 @@ import { promptAwsUser } from "./prompts/prompt-aws-user.js";
 import { displayAppLogo } from "./display/app-logo.js";
 import { promptProjectName } from "./prompts/prompt-project-name.js";
 import { promptTechStack } from "./prompts/prompt-tech-stack.js";
-import { printFeedbackInfo, printProcessStart } from "./prompts/print-feedback-info.js";
+import { printFeedbackInfo } from "./prompts/print-feedback-info.js";
 import { promptTemplate } from "./prompts/prompt-template.js";
 import { GITHUB_REPO, templates } from "./config/templates.js";
 import { execute } from "./child-process.js";
@@ -14,8 +14,9 @@ import { spinner } from "./prompts/spinner.js";
 
 const handleSigTerm = () => process.exit(0)
 
-process.on('SIGINT', handleSigTerm)
-process.on('SIGTERM', handleSigTerm)
+process.on('SIGABRT', handleSigTerm);
+process.on('SIGINT', handleSigTerm);
+process.on('SIGTERM', handleSigTerm);
 
 program.command('init')
   .description('Bootstrap a new project')
@@ -42,7 +43,7 @@ program.command('init')
     const templateKey = await promptTemplate();
     printFeedbackInfo("Using what template:", templateKey);
 
-    printProcessStart(projectName, templateKey, techStack);
+    // printProcessStart(projectName, templateKey, techStack);
 
     try {
       const done = await execute("npx", [
