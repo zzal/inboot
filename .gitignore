@@ -24,6 +24,11 @@ test/tmp/**
 test/.trace
 test/traces
 
+# examples
+templates/**/out
+templates/**/.env*.local
+templates/**/package-lock.json
+
 # Editors
 **/.idea
 **/.#*
