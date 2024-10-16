@@ -1,0 +1,13 @@
+.main {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  margin: 0 auto;
+  max-width: var(--max-width);
+}
+
+.vStack {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
