@@ -10,6 +10,7 @@ import { printFeedbackInfo, printProcessStart } from "./prompts/print-feedback-i
 import { promptTemplate } from "./prompts/prompt-template.js";
 import { GITHUB_REPO, templates } from "./config/templates.js";
 import { execute } from "./child-process.js";
+import { spinner } from "./prompts/spinner.js";
 
 const handleSigTerm = () => process.exit(0)
 
@@ -43,13 +44,20 @@ program.command('init')
 
     printProcessStart(projectName, templateKey, techStack);
 
-    execute("npx", [
-      "create-next-app@latest",
-      "--example",
+    try {
+      const done = await execute("npx", [
+        "create-next-app@latest",
+        "--example",
         `${GITHUB_REPO}/${templates[templateKey]}`,
-      "--use-npm",
-      projectName,
-    ])
+        "--use-npm",
+        projectName,
+      ]);
+      if (done) {
+        spinner.succeed("Done!");
+      }
+    } catch (e) {
+      spinner.fail(String(e));
+    }
   });
 
 program.parse();

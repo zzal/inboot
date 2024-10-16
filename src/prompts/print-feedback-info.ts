@@ -12,4 +12,5 @@ export const printProcessStart = (projectName: string, templateKey: string, tech
   const getTuple = (label: string, value: string) => `${label} ${chalk.cyan(chalk.inverse(` ${value} `))}`;
 
   spinner.start(`${getTuple("Creating", projectName)} ${getTuple("using template", templateKey)} ${getTuple("via", techStack)}`);
+  spinner.stop();
 }
