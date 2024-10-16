@@ -8,9 +8,9 @@ import { promptProjectName } from "./prompts/prompt-project-name.js";
 import { promptTechStack } from "./prompts/prompt-tech-stack.js";
 import { printFeedbackInfo } from "./prompts/print-feedback-info.js";
 import { promptTemplate } from "./prompts/prompt-template.js";
-import { GITHUB_REPO, templates } from "./config/templates.js";
-import { execute } from "./child-process.js";
-import { spinner } from "./prompts/spinner.js";
+import { templates } from "./examples/index.js";
+
+import { nextInstall } from "./handlers/next-install.js";
 
 const handleSigTerm = () => process.exit(0)
 
@@ -43,22 +43,25 @@ program.command('init')
     const templateKey = await promptTemplate();
     printFeedbackInfo("Using what template:", templateKey);
 
+    const selectedTemplate = templates[templateKey];
+
+    if (selectedTemplate.handle != null) {
+      try {
+        for await (const stepPassed of selectedTemplate.handle(templateKey, projectName, techStack)) {
+          if (!stepPassed) {
+            program.error("Not finished!! 😱");
+          }
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    } else {
+      await nextInstall(templates[templateKey].exampleUrl, projectName);
+    }
+
+    process.exit(0);
     // printProcessStart(projectName, templateKey, techStack);
 
-    try {
-      const done = await execute("npx", [
-        "create-next-app@latest",
-        "--example",
-        `${GITHUB_REPO}/${templates[templateKey]}`,
-        "--use-npm",
-        projectName,
-      ]);
-      if (done) {
-        spinner.succeed("Done!");
-      }
-    } catch (e) {
-      spinner.fail(String(e));
-    }
   });
 
 program.parse();

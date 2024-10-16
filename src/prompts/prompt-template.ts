@@ -1,6 +1,6 @@
 import inquirer from "inquirer";
 
-import { templates } from "../config/templates.js";
+import { templates } from "../examples/index.js";
 
 type TemplateKeys = keyof typeof templates;
 
@@ -15,5 +15,4 @@ export const promptTemplate = async (): Promise<TemplateKeys> => {
       },
     ]);
   return answer.templateKey as TemplateKeys;
-
 }
